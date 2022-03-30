@@ -13,7 +13,8 @@ function App() {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
   const [rentalData, setRentalData] = useState([])
-
+  console.log("rentalData", rentalData)
+  
   const addRentalData = (data) => {
     let allData = [...rentalData, data]
     setRentalData(allData)

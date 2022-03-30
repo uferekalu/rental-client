@@ -37,7 +37,8 @@
 .home-page .reg {
   margin-top: 0.9rem;
 }
-.register {
+.register,
+.rental-status {
   display: flex;
   flex-direction: column;
 }
@@ -45,7 +46,7 @@ form {
   height: auto;
   width: 400px;
   background-color: white;
-  position: absolute;
+  position: relative;
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
@@ -53,7 +54,7 @@ form {
   backdrop-filter: blur(10px);
   box-shadow: 0 0 40px gray;
   padding: 50px 35px;
-  margin-top: 6rem;
+  margin-top: 24rem;
 }
 form * {
   font-family: "Poppins", sans-serif;
@@ -98,7 +99,7 @@ input {
   min-height: 30px;
   min-width: 120px;
   width: 100%;
-  margin-top: 50px;
+  margin-top: 20px;
   cursor: pointer;
 }
 .regbtn a {
@@ -112,5 +113,92 @@ input {
 .rental {
   display: flex;
   flex-direction: column;
-  margin-top: -10rem;
+  margin-top: 20px;
+}
+.rentalbtn {
+  background-color: lightgreen;
+  color: black;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  min-height: 30px;
+  min-width: 120px;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.preapprovedBtn {
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  min-height: 30px;
+  min-width: 120px;
+  width: 100%;
+  margin-top: 20px;
+  cursor: pointer;
+}
+.preapprovedBtn:hover {
+  background-color: seagreen;
+  transition: 0.7s;
+}
+.rental-status {
+  list-style-type: none;
+  width: 112%;
+  margin-left: -39px;
+}
+.rental-status li {
+  padding: 15px;
+  margin-top: 10px;
+  border: 0.8px solid gray;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.rental-status li:hover {
+  border: 2px solid gray;
+  color: purple;
+}
+.request-amount-input {
+  border: 1px solid gray;
+  border-radius: 10px;
+  background-color: #fff;
+}
+.monthly-plan {
+  height: 48px;
+  border-radius: 5px;
+  padding: 0 15px;
+  border: 0;
+  outline: 0;
+  box-shadow: 0 0 4px 0px rgb(0 0 0 /24%);
+  transition: all 0.2s;
+  background-color: white;
+  margin-top: 20px;
+  min-height: 30px;
+  min-width: 120px;
+  width: 100%;
+}
+.rentalbtn {
+  background-color: green;
+  color: white;
+  font-size: 18px;
+  margin-top: 20px;
+}
+.rentalbtn:hover {
+  background-color: seagreen;
+  transition: 0.7s;
+  color: white;
+}
+.payment-option-div {
+  display: flex;
+  flex-direction: column;
+  background-color: lightgray;
+  border-radius: 10px;
+  padding: 10px;
+}
+.payment-option span {
+  float: right;
+  margin-top: -20px;
+  font-weight: 900;
 }

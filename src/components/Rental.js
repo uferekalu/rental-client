@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const initialState = {
@@ -7,6 +7,12 @@ const initialState = {
   rentRequestAmount: "",
   monthlySalary: "",
   monthlyPaymentPlan: ""
+};
+
+const statuses = {
+  1: "Looking to renew my rent",
+  2: "Want to pay for a new place",
+  3: "I'm still searching"
 };
 
 const Rental = ({ addRentalData }) => {
@@ -28,13 +34,13 @@ const Rental = ({ addRentalData }) => {
   const handleNext = e => {
     e.preventDefault();
     if (
-      !rentalData.accomodationStatus ||
       !rentalData.rentRequestAmount ||
       !rentalData.monthlySalary ||
       !rentalData.monthlyPaymentPlan
     ) {
       alert("Please fill all fields");
     } else {
+      addRentalData(rentalData);
       e.currentTarget.textContent = "Wait...";
       navigate("/preapproved");
     }
@@ -42,44 +48,77 @@ const Rental = ({ addRentalData }) => {
 
   return (
     <div className="rental">
-      <form noValidate>
+      <form noValidate className="rental-form">
         <div className="rental-heading">
           <h2>Payment Option</h2>
         </div>
-        <div className="rental-status">
+        <div>
           <label htmlFor="name">What's your accomodation status?</label>
-          <button className="rental-status-btn">
-            Looking to renew my rent
-          </button>
-          <button className="rental-status-btn">
-            Want to pay for a new place
-          </button>
-          <button className="rental-status-btn">I'm still searching</button>
+          <ul
+            className="rental-status"
+            onChange={e =>
+              setRentalData({
+                ...rentalData,
+                accomodationStatus: e.target.value
+              })}
+          >
+            {Object.keys(statuses).map((status, index) =>
+              <li
+                key={index}
+                active={index}
+                name={status}
+                id={status}
+                value={statuses[status]}
+              >
+                {statuses[status]}
+              </li>
+            )}
+          </ul>
         </div>
         <div className="request-amount">
           <label htmlFor="name">How much is your request amount?</label>
           <input
+            className="request-amount-input"
             type="text"
             autoFocus
             name="rentRequestAmount"
             required
             placeholder="Amount"
             id="name"
+            onChange={e =>
+              setRentalData({
+                ...rentalData,
+                rentRequestAmount: e.target.value
+              })}
           />
         </div>
         <div className="monthly-salary">
           <label htmlFor="name">How much do you earn monthly?</label>
           <input
+            className="request-amount-input"
             type="text"
             autoFocus
             name="monthlySalary"
             required
             placeholder="Amount"
             id="name"
+            onChange={e =>
+              setRentalData({
+                ...rentalData,
+                monthlySalary: e.target.value
+              })}
           />
         </div>
-        <div className="monthly-plan">
-          <select name="filter_select">
+        <div>
+          <select
+            name="filter_select"
+            className="monthly-plan"
+            onChange={e =>
+              setRentalData({
+                ...rentalData,
+                monthlyPaymentPlan: e.target.value
+              })}
+          >
             <option value="">Choose a monthly payment plan</option>
             <option value="1">1 Month</option>
             <option value="2">2 Month</option>
@@ -96,7 +135,9 @@ const Rental = ({ addRentalData }) => {
           </select>
         </div>
         <div>
-          <button className="rentalbtn">Next</button>
+          <button className="rentalbtn" onClick={handleNext}>
+            Next
+          </button>
         </div>
       </form>
     </div>

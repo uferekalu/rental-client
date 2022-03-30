@@ -44,7 +44,7 @@ const Register = ({ history }) => {
 
   return (
     <div className="register reg-form">
-        <form noValidate>
+        <form noValidate className="register-form">
           <div>
             <button className="btn-home">
               <Link to="/">
