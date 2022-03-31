@@ -8,10 +8,16 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
     textAlign: "left",
-    fontSize: "1.96rem"
+    fontSize: "1.96rem",
+    '@media only screen and (max-width: 600px)': {
+      fontSize: "1.2rem"
+    }
   },
   name: {
-    textAlign: "center"
+    textAlign: "center",
+    '@media only screen and (max-width: 600px)': {
+      fontSize: "1rem"
+    }
   }
 }));
 

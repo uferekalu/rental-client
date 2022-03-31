@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import formatAmount from "../utils/utility";
 import { createRent } from "../actions/rentalActions";
 
 const Preapproved = props => {
@@ -11,19 +10,16 @@ const Preapproved = props => {
 
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
+  const cvd = approvedData
+  
+  const monthlyPayment = (((cvd?.rentRequestAmount) / (cvd?.monthlyPaymentPlan)) + (0.02 * cvd?.rentRequestAmount)).toFixed(2)
+  console.log("ths is monthly", monthlyPayment)
 
-  let approved = [];
-  props.rentdata.map(rent => {
-    return approved.push(rent);
-  });
-  console.log("approved data", approved);
 
-  const monthlyPayment = approved.map(app =>
-    formatAmount(
-      (app.rentRequestAmount / app.monthlyPaymentPlan +
-        0.02 * app.rentRequestAmount).toFixed(2)
-    )
-  );
+  useEffect(() => {
+    props.rentdata?.map((data) => setApprovedData(data))
+
+  }, [props.rentdata])
 
   useEffect(
     () => {
@@ -34,35 +30,26 @@ const Preapproved = props => {
     [navigate, userInfo]
   );
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault()
     const data = {
       accomodationStatus: "Looking to renew my rent",
-      rentRequestAmount: String(approved.map(app => app.rentRequestAmount)),
-      monthlySalary: String(approved.map(app => app.monthlySalary)),
-      monthlyPaymentPlan: String(approved.map(app => app.monthlyPaymentPlan)),
-      monthlyPayment: approved.map(app =>
-        String(
-          formatAmount(
-            (app.rentRequestAmount / app.monthlyPaymentPlan +
-              0.02 * app.rentRequestAmount).toFixed(2)
-          )
-        )
-      ),
-      preapprovedAmount: String(approved.map(app => app.rentRequestAmount)),
-      tenor: approved.map(
-        app =>
-          app.monthlyPaymentPlan > 1
-            ? String(`${app.monthlyPaymentPlan}  Months`)
-            : String(`${app.monthlyPaymentPlan}  Month`)
-      )
-    };
-    console.log(data);
+      rentRequestAmount: cvd.rentRequestAmount,
+      monthlySalary: cvd.monthlySalary,
+      monthlyPaymentPlan: cvd.monthlyPaymentPlan,
+      monthlyPayment: monthlyPayment,
+      preapprovedAmount: cvd.rentRequestAmount,
+      tenor: cvd?.monthlyPaymentPlan > 1
+                ? String(`${cvd?.monthlyPaymentPlan}  Months`)
+                : String(`${cvd?.monthlyPaymentPlan}  Month`)
+
+    }
+    console.log(data)
     dispatch(createRent(data));
     alert("rent submitted!!!");
-    navigate('/success')
-  };
-
+    navigate("/");
+  }
+  
   return (
     <div className="rental">
       <form noValidate className="rental-form">
@@ -79,24 +66,14 @@ const Preapproved = props => {
             required
             placeholder="Amount"
             id="name"
-            value={approved.map(app => app.rentRequestAmount)}
-            onChange={e =>
-              setApprovedData({
-                ...approvedData,
-                rentRequestAmount: e.target.value
-              })}
+            value={cvd?.rentRequestAmount}
           />
         </div>
         <div>
           <select
             name="filter_select"
             className="monthly-plan"
-            value={approved.map(app => app.monthlyPaymentPlan)}
-            onChange={e =>
-              setApprovedData({
-                ...approvedData,
-                monthlyPaymentPlan: e.target.value
-              })}
+            value={cvd?.monthlyPaymentPlan}
           >
             <option value="">Monthly payment plan</option>
             <option value="1">1 Month</option>
@@ -119,7 +96,7 @@ const Preapproved = props => {
             <div className="payment-option">
               <label htmlFor="name">Pre-approved amount:</label>
               <span>
-                #{formatAmount(approved.map(app => app.rentRequestAmount))}
+                #{(cvd?.rentRequestAmount)}
               </span>
             </div>
             <div className="payment-option">
@@ -131,12 +108,11 @@ const Preapproved = props => {
             <div className="payment-option">
               <label htmlFor="name">Tenor:</label>
               <span>
-                {approved.map(
-                  app =>
-                    app.monthlyPaymentPlan > 1
-                      ? `${app.monthlyPaymentPlan}  Months`
-                      : `${app.monthlyPaymentPlan}  Month`
-                )}
+                {
+                    cvd?.monthlyPaymentPlan > 1
+                      ? `${cvd?.monthlyPaymentPlan}  Months`
+                      : `${cvd?.monthlyPaymentPlan}  Month`
+                }
               </span>
             </div>
           </div>
@@ -149,6 +125,7 @@ const Preapproved = props => {
       </form>
     </div>
   );
+
 };
 
 export default Preapproved;

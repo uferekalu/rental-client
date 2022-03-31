@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   accomodationStatus: "",
@@ -15,25 +15,9 @@ const statuses = {
   3: "I'm still searching"
 };
 
-const Rental = ({ addRentalData, currentId, setCurrentId }) => {
+const Rental = ({ addRentalData }) => {
   const navigate = useNavigate();
   const [rentalData, setRentalData] = useState(initialState);
-
-  const rentDetails = useSelector(
-    state =>
-      currentId ? state.rents.find(rent => rent._id === currentId) : null
-  );
-
-  console.log("this is rentDetails", rentDetails);
-
-  useEffect(
-    () => {
-      if (rentDetails) {
-        setRentalData(rentDetails);
-      }
-    },
-    [rentDetails]
-  );
 
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
@@ -49,19 +33,22 @@ const Rental = ({ addRentalData, currentId, setCurrentId }) => {
 
   const handleNext = e => {
     e.preventDefault();
-    if (currentId === 0) {
-      if (
-        !rentalData.rentRequestAmount ||
-        !rentalData.monthlySalary ||
-        !rentalData.monthlyPaymentPlan
-      ) {
-        alert("Please fill all fields");
-      } else {
-        addRentalData(rentalData);
-        e.currentTarget.textContent = "Wait...";
-        navigate("/preapproved");
-      }
+    if (
+      !rentalData.rentRequestAmount ||
+      !rentalData.monthlySalary ||
+      !rentalData.monthlyPaymentPlan
+    ) {
+      return alert("Please fill all fields");
     }
+    if (isNaN(rentalData.rentRequestAmount)) {
+      return alert("Please you must enter a number")
+    }
+    if (isNaN(rentalData.monthlySalary)) {
+      return alert("please you must enter a number")
+    }
+    addRentalData(rentalData);
+    e.currentTarget.textContent = "Wait...";
+    navigate("/preapproved");
   };
 
   return (
@@ -81,13 +68,7 @@ const Rental = ({ addRentalData, currentId, setCurrentId }) => {
               })}
           >
             {Object.keys(statuses).map((status, index) =>
-              <li
-                key={index}
-                active={index}
-                name={status}
-                id={status}
-                value={rentalData.accomodationStatus}
-              >
+              <li key={index} active={index} name={status} id={status}>
                 {statuses[status]}
               </li>
             )}
@@ -103,7 +84,6 @@ const Rental = ({ addRentalData, currentId, setCurrentId }) => {
             required
             placeholder="Amount"
             id="name"
-            value={rentalData.rentRequestAmount}
             onChange={e =>
               setRentalData({
                 ...rentalData,
@@ -121,7 +101,6 @@ const Rental = ({ addRentalData, currentId, setCurrentId }) => {
             required
             placeholder="Amount"
             id="name"
-            value={rentalData.monthlySalary}
             onChange={e =>
               setRentalData({
                 ...rentalData,
@@ -133,7 +112,6 @@ const Rental = ({ addRentalData, currentId, setCurrentId }) => {
           <select
             name="filter_select"
             className="monthly-plan"
-            value={rentalData.monthlyPaymentPlan}
             onChange={e =>
               setRentalData({
                 ...rentalData,
