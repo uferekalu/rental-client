@@ -14,7 +14,7 @@ export const createRent = form => async (dispatch, getState) => {
         Authorization: `${userInfo.token}`
       }
     };
-    const { data } = await axios.post("/api/rents", form, config);
+    const { data } = await axios.post("https://rentals-server.herokuapp.com/api/rents", form, config);
 
     dispatch({
       type: RENT_CREATE,
@@ -34,7 +34,7 @@ export const fetchRents = () => async (dispatch, getState) => {
         Authorization: `${userInfo.token}`
       }
     };
-    const { data } = await axios.get("/api/rents", config);
+    const { data } = await axios.get("https://rentals-server.herokuapp.com/api/rents", config);
     dispatch({
       type: RENT_FETCH_ALL,
       payload: data
