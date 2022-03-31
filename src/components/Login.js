@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { signin } from "../actions/authActions";
+import { validateEmail } from "../utils/utility";
 
 const initialState = {
   email: "",
@@ -28,11 +29,13 @@ const Login = ({ history }) => {
   const handleSubmit = e => {
     e.preventDefault();
     if (!authForm.email || !authForm.password) {
-      alert("Please fill all fields or password is incorrect");
-    } else {
-      e.currentTarget.textContent = "Signing in...";
-      dispatch(signin(authForm));
+      return alert("Please fill all fields");
     }
+    if (!validateEmail(authForm.email)) {
+      return alert("Enter a valid email")
+    }
+    e.currentTarget.textContent = "Signing in...";
+    dispatch(signin(authForm));
   };
 
   return (
