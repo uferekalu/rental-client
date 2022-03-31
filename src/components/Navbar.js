@@ -11,12 +11,18 @@ const useStyles = makeStyles(theme => ({
     fontSize: "1.96rem",
     '@media only screen and (max-width: 600px)': {
       fontSize: "1.2rem"
+    },
+    '@media only screen and (max-width: 450px)': {
+      fontSize: ".9rem"
     }
   },
   name: {
     textAlign: "center",
     '@media only screen and (max-width: 600px)': {
       fontSize: "1rem"
+    },
+    '@media only screen and (max-width: 450px)': {
+      fontSize: ".8rem"
     }
   }
 }));
