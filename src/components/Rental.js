@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { createRent, updateRent } from "../actions/rentalActions";
 
 const initialState = {
   accomodationStatus: "",
@@ -15,9 +16,31 @@ const statuses = {
   3: "I'm still searching"
 };
 
-const Rental = ({ addRentalData }) => {
+const Rental = ({ addRentalData, currentId, setCurrentId }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [rentalData, setRentalData] = useState(initialState);
+
+  const rentDetails = useSelector(
+    state =>
+      currentId ? state.rents.find(rent => rent._id === currentId) : null
+  );
+
+  console.log("this is rentDetails", rentDetails);
+
+  useEffect(
+    () => {
+      if (rentDetails) {
+        setRentalData(rentDetails);
+      }
+    },
+    [rentDetails]
+  );
+
+  const clearData = () => {
+    setRentalData(initialState);
+    setCurrentId(0);
+  };
 
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
@@ -33,16 +56,18 @@ const Rental = ({ addRentalData }) => {
 
   const handleNext = e => {
     e.preventDefault();
-    if (
-      !rentalData.rentRequestAmount ||
-      !rentalData.monthlySalary ||
-      !rentalData.monthlyPaymentPlan
-    ) {
-      alert("Please fill all fields");
-    } else {
-      addRentalData(rentalData);
-      e.currentTarget.textContent = "Wait...";
-      navigate("/preapproved");
+    if (currentId === 0) {
+      if (
+        !rentalData.rentRequestAmount ||
+        !rentalData.monthlySalary ||
+        !rentalData.monthlyPaymentPlan
+      ) {
+        alert("Please fill all fields");
+      } else {
+        addRentalData(rentalData);
+        e.currentTarget.textContent = "Wait...";
+        navigate("/preapproved");
+      }
     }
   };
 
@@ -68,7 +93,7 @@ const Rental = ({ addRentalData }) => {
                 active={index}
                 name={status}
                 id={status}
-                value={statuses[status]}
+                value={rentalData.accomodationStatus}
               >
                 {statuses[status]}
               </li>
@@ -85,6 +110,7 @@ const Rental = ({ addRentalData }) => {
             required
             placeholder="Amount"
             id="name"
+            value={rentalData.rentRequestAmount}
             onChange={e =>
               setRentalData({
                 ...rentalData,
@@ -102,6 +128,7 @@ const Rental = ({ addRentalData }) => {
             required
             placeholder="Amount"
             id="name"
+            value={rentalData.monthlySalary}
             onChange={e =>
               setRentalData({
                 ...rentalData,
@@ -113,6 +140,7 @@ const Rental = ({ addRentalData }) => {
           <select
             name="filter_select"
             className="monthly-plan"
+            value={rentalData.monthlyPaymentPlan}
             onChange={e =>
               setRentalData({
                 ...rentalData,

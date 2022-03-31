@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import formatAmount from "../utils/utility";
+import { createRent } from "../actions/rentalActions";
 
 const Preapproved = props => {
+  const [approvedData, setApprovedData] = useState(null);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const userLogin = useSelector(state => state.userLogin);
@@ -16,8 +19,10 @@ const Preapproved = props => {
   console.log("approved data", approved);
 
   const monthlyPayment = approved.map(app =>
-    formatAmount((app.rentRequestAmount / app.monthlyPaymentPlan +
-      0.02 * app.rentRequestAmount).toFixed(2))
+    formatAmount(
+      (app.rentRequestAmount / app.monthlyPaymentPlan +
+        0.02 * app.rentRequestAmount).toFixed(2)
+    )
   );
 
   useEffect(
@@ -29,7 +34,34 @@ const Preapproved = props => {
     [navigate, userInfo]
   );
 
-  const handleSubmit = e => {};
+  const handleSubmit = e => {
+    e.preventDefault();
+    const data = {
+      accomodationStatus: "Looking to renew my rent",
+      rentRequestAmount: String(approved.map(app => app.rentRequestAmount)),
+      monthlySalary: String(approved.map(app => app.monthlySalary)),
+      monthlyPaymentPlan: String(approved.map(app => app.monthlyPaymentPlan)),
+      monthlyPayment: approved.map(app =>
+        String(
+          formatAmount(
+            (app.rentRequestAmount / app.monthlyPaymentPlan +
+              0.02 * app.rentRequestAmount).toFixed(2)
+          )
+        )
+      ),
+      preapprovedAmount: String(approved.map(app => app.rentRequestAmount)),
+      tenor: approved.map(
+        app =>
+          app.monthlyPaymentPlan > 1
+            ? String(`${app.monthlyPaymentPlan}  Months`)
+            : String(`${app.monthlyPaymentPlan}  Month`)
+      )
+    };
+    console.log(data);
+    dispatch(createRent(data));
+    alert("rent submitted!!!");
+    navigate('/success')
+  };
 
   return (
     <div className="rental">
@@ -48,6 +80,11 @@ const Preapproved = props => {
             placeholder="Amount"
             id="name"
             value={approved.map(app => app.rentRequestAmount)}
+            onChange={e =>
+              setApprovedData({
+                ...approvedData,
+                rentRequestAmount: e.target.value
+              })}
           />
         </div>
         <div>
@@ -55,6 +92,11 @@ const Preapproved = props => {
             name="filter_select"
             className="monthly-plan"
             value={approved.map(app => app.monthlyPaymentPlan)}
+            onChange={e =>
+              setApprovedData({
+                ...approvedData,
+                monthlyPaymentPlan: e.target.value
+              })}
           >
             <option value="">Monthly payment plan</option>
             <option value="1">1 Month</option>
@@ -89,13 +131,20 @@ const Preapproved = props => {
             <div className="payment-option">
               <label htmlFor="name">Tenor:</label>
               <span>
-                {approved.map(app => app.monthlyPaymentPlan > 1 ? `${app.monthlyPaymentPlan}  Months` : `${app.monthlyPaymentPlan}  Month` )}
+                {approved.map(
+                  app =>
+                    app.monthlyPaymentPlan > 1
+                      ? `${app.monthlyPaymentPlan}  Months`
+                      : `${app.monthlyPaymentPlan}  Month`
+                )}
               </span>
             </div>
           </div>
         </div>
         <div>
-          <button className="preapprovedBtn">ACCEPT</button>
+          <button className="preapprovedBtn" onClick={handleSubmit}>
+            ACCEPT
+          </button>
         </div>
       </form>
     </div>

@@ -2,9 +2,13 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
+import { rentReducer } from './reducers/rentReducer'
+
 import { authReducer } from "./reducers/authReducer";
 
+
 const reducers = combineReducers({
+  rents: rentReducer,
   userLogin: authReducer
 });
 
