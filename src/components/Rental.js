@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { createRent, updateRent } from "../actions/rentalActions";
+import { useSelector } from "react-redux";
 
 const initialState = {
   accomodationStatus: "",
@@ -17,7 +16,6 @@ const statuses = {
 };
 
 const Rental = ({ addRentalData, currentId, setCurrentId }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [rentalData, setRentalData] = useState(initialState);
 
@@ -36,11 +34,6 @@ const Rental = ({ addRentalData, currentId, setCurrentId }) => {
     },
     [rentDetails]
   );
-
-  const clearData = () => {
-    setRentalData(initialState);
-    setCurrentId(0);
-  };
 
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
