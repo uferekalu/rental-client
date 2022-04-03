@@ -33,7 +33,7 @@ const Preapproved = props => {
   const handleSubmit = (e) => {
     e.preventDefault()
     const data = {
-      accomodationStatus: "Looking to renew my rent",
+      accomodationStatus: cvd.accomodationStatus,
       rentRequestAmount: cvd.rentRequestAmount,
       monthlySalary: cvd.monthlySalary,
       monthlyPaymentPlan: cvd.monthlyPaymentPlan,
@@ -44,10 +44,10 @@ const Preapproved = props => {
                 : String(`${cvd?.monthlyPaymentPlan}  Month`)
 
     }
-    console.log(data)
+    console.log("submitted data", data)
     dispatch(createRent(data));
     alert("rent submitted!!!");
-    navigate("/");
+    navigate("/thanks");
   }
   
   return (

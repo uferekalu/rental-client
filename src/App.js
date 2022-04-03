@@ -10,10 +10,11 @@ import Rental from "./components/Rental";
 import Preapproved from "./components/Preapproved";
 import { fetchRents } from "./actions/rentalActions";
 import Success from "./components/Success";
+import Thanks from "./pages/Thanks";
+
 
 function App() {
   const dispatch = useDispatch();
-  const [currentId, setCurrentId] = useState(0);
   
   useEffect(
     () => {
@@ -25,8 +26,7 @@ function App() {
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
   const [rentalData, setRentalData] = useState([]);
-  // console.log("rentalData", rentalData);
-
+  
   const addRentalData = data => {
     let allData = [...rentalData, data];
     setRentalData(allData);
@@ -44,8 +44,6 @@ function App() {
             element={
               <Rental
                 addRentalData={addRentalData}
-                currentId={currentId}
-                setCurrentId={setCurrentId}
               />
             }
           />
@@ -59,6 +57,12 @@ function App() {
             path="/success"
             element={
               <Success />
+            }
+          />
+          <Route
+            path="/thanks"
+            element={
+              <Thanks userInfo={userInfo} />
             }
           />
         </Routes>

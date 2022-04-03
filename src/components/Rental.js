@@ -9,15 +9,10 @@ const initialState = {
   monthlyPaymentPlan: ""
 };
 
-const statuses = {
-  1: "Looking to renew my rent",
-  2: "Want to pay for a new place",
-  3: "I'm still searching"
-};
-
-const Rental = ({ addRentalData }) => {
+const Rental = ({ addRentalData, items }) => {
   const navigate = useNavigate();
   const [rentalData, setRentalData] = useState(initialState);
+  console.log("this is now rentalData", rentalData);
 
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
@@ -34,18 +29,19 @@ const Rental = ({ addRentalData }) => {
   const handleNext = e => {
     e.preventDefault();
     if (
+      !rentalData.accomodationStatus ||
       !rentalData.rentRequestAmount ||
       !rentalData.monthlySalary ||
       !rentalData.monthlyPaymentPlan
     ) {
       return alert("Please fill all fields");
     }
-    if (isNaN(rentalData.rentRequestAmount)) {
-      return alert("Please you must enter a number")
+    if (isNaN(rentalData.rentRequestAmount) || isNaN(rentalData.monthlySalary)) {
+      return alert("Please you must enter a number in Request amount and monthly earning fields");
     }
-    if (isNaN(rentalData.monthlySalary)) {
-      return alert("please you must enter a number")
-    }
+    // if (isNaN(rentalData.monthlySalary)) {
+    //   return alert("please you must enter a number");
+    // }
     addRentalData(rentalData);
     e.currentTarget.textContent = "Wait...";
     navigate("/preapproved");
@@ -59,20 +55,20 @@ const Rental = ({ addRentalData }) => {
         </div>
         <div>
           <label htmlFor="name">What's your accomodation status?</label>
-          <ul
-            className="rental-status"
+          <select
+            name="status"
+            className="monthly-plan"
             onChange={e =>
               setRentalData({
                 ...rentalData,
                 accomodationStatus: e.target.value
               })}
           >
-            {Object.keys(statuses).map((status, index) =>
-              <li key={index} active={index} name={status} id={status}>
-                {statuses[status]}
-              </li>
-            )}
-          </ul>
+            <option value="">What's your accomodation status?</option>
+            <option value="Looking to renew my rent">Looking to renew my rent</option>
+            <option value="Want to pay for a new place">Want to pay for a new place</option>
+            <option value="I'm still searching">I'm still searching</option>
+          </select>
         </div>
         <div className="request-amount">
           <label htmlFor="name">How much is your request amount?</label>
