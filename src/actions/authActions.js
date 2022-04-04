@@ -9,7 +9,7 @@ export const signin = form => async dispatch => {
       }
     };
 
-    const { data } = await axios.post("https://rentals-server.herokuapp.com/api/login", form, config);
+    const { data } = await axios.post("https://rental-server-now.herokuapp.com/api/login", form, config);
 
     dispatch({
       type: AUTH,
@@ -28,7 +28,7 @@ export const signup = form => async dispatch => {
       }
     };
 
-    const { data } = await axios.post("https://rentals-server.herokuapp.com/api/register", form, config);
+    const { data } = await axios.post("https://rental-server-now.herokuapp.com/api/register", form, config);
 
     dispatch({
       type: AUTH,

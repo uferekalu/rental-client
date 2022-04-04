@@ -1,5 +1,6 @@
 import {
   RENT_CREATE,
+  RENT_FETCH,
   RENT_FETCH_ALL,
   RENT_UPDATE
 } from "../constants/rentalConstants";
@@ -7,6 +8,8 @@ import {
 export const rentReducer = (rents = [], action) => {
   switch (action.type) {
     case RENT_FETCH_ALL:
+      return action.payload;
+    case RENT_FETCH:
       return action.payload;
     case RENT_CREATE:
       return [...rents, action.payload];
