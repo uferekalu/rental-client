@@ -26,6 +26,7 @@ function App() {
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
   const [rentalData, setRentalData] = useState([]);
+
   
   const addRentalData = data => {
     let allData = [...rentalData, data];
@@ -50,7 +51,7 @@ function App() {
           <Route
             path="/preapproved"
             element={
-              <Preapproved rentdata={rentalData?.length > 0 ? rentalData : null} />
+              <Preapproved rentdata={rentalData?.length > 0 ? rentalData : null} setRentalData={setRentalData} />
             }
           />
           <Route

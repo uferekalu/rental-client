@@ -24,7 +24,7 @@ const Home = userInfo => {
   return (
     <div className="home-page">
       <Typography className={classes.title}>
-        Welcome to Kwaba Rental App! <br /> Signup to make use of the
+        Welcome to the Rental App! <br /> Signup to make use of the
         services...
       </Typography>
       

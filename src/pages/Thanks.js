@@ -24,7 +24,7 @@ const Thanks = userInfo => {
   return (
     <div className="home-page">
       <Typography className={classes.title}>
-        Thank you for using Kwaba Rental App! <br /> Wouls like to make use of
+        Thank you for using Kwaba Rental App! <br /> Would you like to make use of
         the services again? Click the link below...
       </Typography>
 
